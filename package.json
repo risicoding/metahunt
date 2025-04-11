@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest",
+    "lint": "eslint",
     "test:coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",

@@ -9,5 +9,6 @@ export default defineConfig([
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
   },
+  { ignores: ['coverage', 'dist', '__test__'] },
   tseslint.configs.recommended,
 ])
