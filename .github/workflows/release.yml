@@ -23,7 +23,7 @@ jobs:
       - name: Run release
         run: pnpm run release --ci
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: End message
         run: echo 'Job done'
