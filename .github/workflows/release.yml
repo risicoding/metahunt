@@ -14,10 +14,12 @@ jobs:
         uses: actions/setup-node@v4
       - name: Install dependencies and build 🔧
         run: pnpm i --frozen-lockfile
-      - name: Initialize NPM config
+      - name: Initialize PNPM config
         run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
         env:
           NPM_TOKEN: ${{secrets.npm_token}}
+      - name: Build
+        run: pnpm build
       - name: Run release
         run: pnpm run release --ci
         env:
