@@ -5,35 +5,50 @@
  * @param url - The URL of the HTML page to fetch.
  * @returns A promise that resolves with the partial HTML string.
  */
+
 export const fetchHtml = async (url: string): Promise<string> => {
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36',
-    },
-  })
-  const reader = res.body?.getReader()
-  const decoder = new TextDecoder()
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36',
+      },
+    })
 
-  let html = ''
-  let done = false
-
-  while (!done && reader) {
-    const { value, done: readerDone } = await reader.read()
-
-    // Ensure value is defined before decoding
-    if (value) {
-      html += decoder.decode(value)
+    if (!res.ok || !res.body) {
+      throw new Error(`Failed to fetch HTML. Status: ${res.status}`)
     }
 
-    // Stop reading once </head> is encountered
-    if (html.includes('</head>')) {
-      html = html.split('</head>')[0] + '<head/>'
-      done = true
+    const reader = res.body.getReader()
+    const decoder = new TextDecoder()
+
+    let html = ''
+    let done = false
+
+    while (!done) {
+      const result = await reader.read().catch((err) => {
+        throw new Error(`Failed to read response body: ${err.message}`)
+      })
+
+      const { value, done: readerDone } = result
+
+      if (value) {
+        html += decoder.decode(value, { stream: true })
+      }
+
+      if (html.includes('</head>')) {
+        html = html.split('</head>')[0] + '<head/>'
+        break
+      }
+
+      done = readerDone
     }
 
-    done ||= readerDone
+    return html
+  } catch (err) {
+    console.error('fetchHtml error:', err)
+    throw new Error(
+      `Error fetching HTML from ${url}: ${err instanceof Error ? err.message : String(err)}`,
+    )
   }
-
-  return html
 }

@@ -1,5 +1,4 @@
 import { load } from 'cheerio'
-import { fetchHtml } from './html/fetchHtml'
 
 type ScrapedMeta = {
   title?: string
@@ -17,8 +16,7 @@ type ScrapedMeta = {
 
 type ScrapedMetaKeys = keyof Omit<ScrapedMeta, 'og' | 'twitter'>
 
-export const scrapeMeta = async (url: string): Promise<ScrapedMeta> => {
-  const html = await fetchHtml(url)
+export const scrapeMeta = async (html: string,url:string): Promise<ScrapedMeta> => {
   const $ = load(html)
 
   const meta: ScrapedMeta = {
