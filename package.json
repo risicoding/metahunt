@@ -1,6 +1,6 @@
 {
-  "name": "meta-hunt",
-  "version": "0.0.1",
+  "name": "metahunt",
+  "version": "0.1.1",
   "description": "",
   "main": "dis/index.js",
   "module": "dist/index.mjs",
