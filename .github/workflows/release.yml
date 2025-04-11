@@ -17,13 +17,13 @@ jobs:
       - name: Initialize PNPM config
         run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
         env:
-          NPM_TOKEN: ${{secrets.npm_token}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Build
         run: pnpm build
       - name: Run release
         run: pnpm run release --ci
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.npm_token}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: End message
         run: echo 'Job done'
